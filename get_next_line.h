@@ -6,7 +6,7 @@
 /*   By: erramos <erramos@student.42.rio>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 16:27:51 by erramos           #+#    #+#             */
-/*   Updated: 2023/11/17 19:45:56 by erramos          ###   ########.fr       */
+/*   Updated: 2023/11/23 15:06:18 by erramos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 
 # endif
 
+char	*get_next_line(int fd);
 size_t  ft_strlen(const char *s);
 void    *ft_memcpy(void *dest, const void *src, size_t n);
 size_t  ft_strlcat(char *dest, char *src, size_t n);

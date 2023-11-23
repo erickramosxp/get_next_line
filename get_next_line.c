@@ -6,7 +6,7 @@
 /*   By: erramos <erramos@student.42.rio>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 16:32:11 by erramos           #+#    #+#             */
-/*   Updated: 2023/11/23 14:55:47 by erramos          ###   ########.fr       */
+/*   Updated: 2023/11/23 16:19:36 by erramos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ char	*convert(char *line, char *buff)
 		line = ft_strjoin(temp, buff);
 		free(temp);
 	}
+//	printf("\nTransferindo o buffer: %s para linha: %s\n", buff, line);
 	return (line);
 }
 char	*new_line(char	*resp, char *line)
@@ -69,7 +70,7 @@ char	*new_line(char	*resp, char *line)
 
 	i = 0;
 	j = 0;
-	while (line[i] != '\n')
+	while (line[i] != '\n' && line[i] != '\0')
 		i++;
 	resp = (char *)malloc((i + 1) * sizeof(char));
 	while (j < i)
@@ -78,6 +79,7 @@ char	*new_line(char	*resp, char *line)
 		j++;
 	}
 	resp[j] = '\0';
+//	printf("\nNova linha: %s\n", resp);
 	return (resp);
 }
 
@@ -104,7 +106,11 @@ char	*remove_linebreak(char *line)
 		i++;
 		j++;
 	}
+	if (temp[i] == '\0')
+		line[j] = '\0';
+//	printf("\nVariavel temporaria do remover quebra: %s\n", temp);
 	free(temp);
+//	printf("\nQuebra de linha removida: %s\n", line);
 	return (line);
 }
 /*
@@ -153,6 +159,7 @@ char	*get_next_line(int fd)
         while (rd > 0 && check)
         {
                 rd = read(fd, buff, BUFFER_SIZE);
+//		printf("\nbites lidos :%d\n", rd);
                 buff[rd] = '\0';
                 line = convert(line, buff);
                 if (check_backslash(line))
@@ -173,6 +180,9 @@ int	main(void)
 	int	fd;
 
 	fd = open("text.txt", O_RDONLY);
+//	get_next_line(fd);
+//	get_next_line(fd);
+//	get_next_line(fd);
 	printf("Primeira parte:\n%s",  get_next_line(fd));
 	printf("\nsegunda parte:\n");
 	printf("%s", get_next_line(fd));
