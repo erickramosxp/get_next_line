@@ -6,7 +6,7 @@
 /*   By: erramos <erramos@student.42.rio>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 16:32:11 by erramos           #+#    #+#             */
-/*   Updated: 2023/11/23 16:19:36 by erramos          ###   ########.fr       */
+/*   Updated: 2023/11/23 18:09:39 by erramos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,6 +159,12 @@ char	*get_next_line(int fd)
         while (rd > 0 && check)
         {
                 rd = read(fd, buff, BUFFER_SIZE);
+		if (rd == 0)
+		{
+//			free(line);
+			free(buff);
+			return (NULL);
+		}
 //		printf("\nbites lidos :%d\n", rd);
                 buff[rd] = '\0';
                 line = convert(line, buff);
@@ -170,6 +176,7 @@ char	*get_next_line(int fd)
                         check = 0;
                 }
         }
+	free(buff);
 //	printf("\n\n%s\n\n", line);
 //	printf("%s", line);
 	return (resp);
@@ -188,5 +195,6 @@ int	main(void)
 	printf("%s", get_next_line(fd));
 	printf("\nterceira parte:\n");
 	printf("%s", get_next_line(fd));
+	printf("\n%s", get_next_line(fd));
 //	close(fd);
 }
