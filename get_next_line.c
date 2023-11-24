@@ -6,7 +6,7 @@
 /*   By: erramos <erramos@student.42.rio>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 16:32:11 by erramos           #+#    #+#             */
-/*   Updated: 2023/11/23 18:09:39 by erramos          ###   ########.fr       */
+/*   Updated: 2023/11/24 18:27:41 by erramos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,29 +156,32 @@ char	*get_next_line(int fd)
 
         rd = 1;
         check = 1;
+	if (line != NULL && check_backslash(line))
+	{
+		resp = new_line(resp, line);
+		line = remove_linebreak(line);
+		if(line[0] == '\0')
+			free(line);
+		return (resp);
+	}
         while (rd > 0 && check)
         {
                 rd = read(fd, buff, BUFFER_SIZE);
 		if (rd == 0)
 		{
-//			free(line);
 			free(buff);
 			return (NULL);
 		}
-//		printf("\nbites lidos :%d\n", rd);
                 buff[rd] = '\0';
                 line = convert(line, buff);
                 if (check_backslash(line))
                 {
                         resp = new_line(resp, line);
                    	line = remove_linebreak(line);
-//                      printf("\n\n%s\n\n", line);
                         check = 0;
                 }
         }
 	free(buff);
-//	printf("\n\n%s\n\n", line);
-//	printf("%s", line);
 	return (resp);
 }
 
@@ -190,11 +193,31 @@ int	main(void)
 //	get_next_line(fd);
 //	get_next_line(fd);
 //	get_next_line(fd);
-	printf("Primeira parte:\n%s",  get_next_line(fd));
+
+	char	*a = get_next_line(fd);
+	printf("Primeira parte:\n%s", a);
+	free(a);
 	printf("\nsegunda parte:\n");
-	printf("%s", get_next_line(fd));
+	char    *b = get_next_line(fd);
+	printf("%s", b);
+	free(b);
 	printf("\nterceira parte:\n");
-	printf("%s", get_next_line(fd));
+	char    *c = get_next_line(fd);
+	printf("%s", c);
+	free(c);
+	char    *d = get_next_line(fd);
+	printf("\n%s", d);
+	free(d);
+	char    *e = get_next_line(fd);
+	printf("\n%s", e);
+	free(e);
+	char    *f = get_next_line(fd);
+	printf("\n%s", f);
+	free(f);
+	char    *h = get_next_line(fd);
+	printf("\n%s", h);
+	free(h);
+	printf("\n%s", get_next_line(fd));
 	printf("\n%s", get_next_line(fd));
 //	close(fd);
 }
