@@ -6,7 +6,7 @@
 /*   By: erramos <erramos@student.42.rio>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 16:32:11 by erramos           #+#    #+#             */
-/*   Updated: 2023/11/26 14:32:26 by erramos          ###   ########.fr       */
+/*   Updated: 2023/11/26 15:54:30 by erramos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,10 @@ char	*read_line(int fd, char *rest, char *buffer)
 		if (rd < 0)
 			return (0);
 		if (rd == 0)
+		{
+			rest = NULL;
 			break;
+		}
 		buffer[rd] = '\0';
 		if (!rest)
 			rest = ft_strdup("");
@@ -98,10 +101,15 @@ char	*remove_breakline(char *rest)
 		j++;
 		i++;
 	}
-	if (temp[i] == '\0')
-		rest[j] = '\0';
+//	if (temp[i] == '\0')
+	rest[j] = '\0';
 	free(temp);
 	temp = NULL;
+	if (rest[0] == '\0')
+	{
+		free(rest);
+		rest = NULL;
+	}
 	return (rest);
 }
 
@@ -119,7 +127,7 @@ char    *get_next_line(int fd)
 		return (0);
 	rest = read_line(fd, rest, buffer);
 	free(buffer);
-	if (rest[0] == '\0')
+	if (!rest)
 	{
 		return (NULL);
 	}
@@ -127,7 +135,7 @@ char    *get_next_line(int fd)
 	rest = remove_breakline(rest);
 	return (line);
 }
-
+/*
 int	main(void)
 {
 	int	fd;
@@ -163,4 +171,4 @@ int	main(void)
 	printf("\n%s", get_next_line(fd));
 	printf("\n%s\n\n", get_next_line(fd));
 //	close(fd);
-}
+}*/
