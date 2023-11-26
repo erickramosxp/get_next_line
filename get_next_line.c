@@ -6,7 +6,7 @@
 /*   By: erramos <erramos@student.42.rio>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 16:32:11 by erramos           #+#    #+#             */
-/*   Updated: 2023/11/24 18:27:41 by erramos          ###   ########.fr       */
+/*   Updated: 2023/11/26 14:32:26 by erramos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,175 +14,118 @@
 #include <fcntl.h>
 #include <stdio.h>
 
-int     check_backslash(char *buff)
+int	check_breakline(char *rest)
 {
 	int	i;
 
 	i = 0;
-        while (buff[i] != '\0')
-        {
-                if (buff[i] == '\n')
-                        return (1);
-                i++;
-        }
-        return (0);
-}
-/*
-void	ft_copy(char *line, char *temp)
-{
-	int	i;
-	int	len;
-
-	i = 0;
-//	printf("%s\n\n", temp);
-	len = ft_strlen(line);
-	while (temp[i] != '\0')
+	while (rest[i] != '\0')
 	{
-		line[len + i] = temp[i];
+		if (rest[i] == '\n')
+			return (1);
 		i++;
 	}
-//	printf("%s\n\n", line);
+	return (0);
 }
-*/
-char	*convert(char *line, char *buff)
+char	*read_line(int fd, char *rest, char *buffer)
 {
+	int	rd;
 	char	*temp;
 
-	if (!line)
+	rd = 1;
+	while (rd > 0)
 	{
-		line = ft_strdup(buff);
-//		printf("%s", line);
-	}
-	else
-	{
-		temp = ft_strdup(line);
-		free(line);
-		line = ft_strjoin(temp, buff);
+		rd = read(fd, buffer, BUFFER_SIZE);
+		if (rd < 0)
+			return (0);
+		if (rd == 0)
+			break;
+		buffer[rd] = '\0';
+		if (!rest)
+			rest = ft_strdup("");
+		temp = ft_strdup(rest);
+		free(rest);
+		rest = ft_strjoin(temp, buffer);
 		free(temp);
+		temp = NULL;
+		if (check_breakline(rest))
+			break;
 	}
-//	printf("\nTransferindo o buffer: %s para linha: %s\n", buff, line);
-	return (line);
+	return (rest);
 }
-char	*new_line(char	*resp, char *line)
+
+char	*get_line(char *line, char *rest)
 {
 	int	i;
 	int	j;
 
 	i = 0;
 	j = 0;
-	while (line[i] != '\n' && line[i] != '\0')
+	while (rest[i] != '\n' && rest[i] != '\0')
 		i++;
-	resp = (char *)malloc((i + 1) * sizeof(char));
+	line = (char *)malloc((i + 1) * sizeof(char));
+	if (!line)
+		return (0);
 	while (j < i)
 	{
-		resp[j] = line[j];
+		line[j] = rest[j];
 		j++;
 	}
-	resp[j] = '\0';
-//	printf("\nNova linha: %s\n", resp);
-	return (resp);
+	line[j] = '\0';
+	return (line);
 }
 
-char	*remove_linebreak(char *line)
+char	*remove_breakline(char *rest)
 {
+	char	*temp;
 	int	i;
 	int	j;
-	char	*temp;
 
 	i = 0;
-	while (line[i] != '\n')
+	while(rest[i] != '\n' && rest[i] != '\0')
 		i++;
 	j = i;
-	while (line[j] != '\0')
+	while (rest[j] != '\0')
 		j++;
-	temp = ft_strdup(line);
-	free(line);
-	line = (char *)malloc((j - i + 1) * sizeof(char));
+	temp = ft_strdup(rest);
+	free(rest);
+	rest = (char *)malloc((j - i + 1) * sizeof(char));
 	i++;
 	j = 0;
 	while (temp[i] != '\0')
 	{
-		line[j] = temp[i];
-		i++;
+		rest[j] = temp[i];
 		j++;
+		i++;
 	}
 	if (temp[i] == '\0')
-		line[j] = '\0';
-//	printf("\nVariavel temporaria do remover quebra: %s\n", temp);
+		rest[j] = '\0';
 	free(temp);
-//	printf("\nQuebra de linha removida: %s\n", line);
-	return (line);
+	temp = NULL;
+	return (rest);
 }
-/*
-char	*transfer(int fd, char *buff, char *line)
-{
-	char	*resp;
-	int	rd;
-	int	check;
 
-	rd = 1;
-	check = 1;
-	while (rd > 0 && check)
+char    *get_next_line(int fd)
+{
+	char	*line;
+	char	*buffer;
+	static char	*rest;
+
+	line = NULL;
+	if (fd < 0 || BUFFER_SIZE < 0)
+		return (0);
+	buffer = (char *)malloc((BUFFER_SIZE + 1) * sizeof(char));
+	if (!buffer)
+		return (0);
+	rest = read_line(fd, rest, buffer);
+	free(buffer);
+	if (rest[0] == '\0')
 	{
-		rd = read(fd, buff, BUFFER_SIZE);
-		buff[rd] = '\0';
-		line = convert(line, buff);
-		if (check_backslash(line))
-		{
-			resp = new_line(resp, line);
-//			line = remove_linebreak(line);
-//			printf("\n\n%s\n\n", line);
-			check = 0;
-		}
-	}
-	return (resp);
-}
-*/
-char	*get_next_line(int fd)
-{
-	char	*buff;
-	static char	*line;
-	char	*resp;
-
-	buff = (char *)malloc((BUFFER_SIZE + 1) * sizeof(char));
-	if (!buff)
 		return (NULL);
-//	resp = transfer(fd, buff, line);
-//
-
-//	char    *resp;
-        int     rd;
-        int     check;
-
-        rd = 1;
-        check = 1;
-	if (line != NULL && check_backslash(line))
-	{
-		resp = new_line(resp, line);
-		line = remove_linebreak(line);
-		if(line[0] == '\0')
-			free(line);
-		return (resp);
 	}
-        while (rd > 0 && check)
-        {
-                rd = read(fd, buff, BUFFER_SIZE);
-		if (rd == 0)
-		{
-			free(buff);
-			return (NULL);
-		}
-                buff[rd] = '\0';
-                line = convert(line, buff);
-                if (check_backslash(line))
-                {
-                        resp = new_line(resp, line);
-                   	line = remove_linebreak(line);
-                        check = 0;
-                }
-        }
-	free(buff);
-	return (resp);
+	line = get_line(line, rest);
+	rest = remove_breakline(rest);
+	return (line);
 }
 
 int	main(void)
@@ -218,6 +161,6 @@ int	main(void)
 	printf("\n%s", h);
 	free(h);
 	printf("\n%s", get_next_line(fd));
-	printf("\n%s", get_next_line(fd));
+	printf("\n%s\n\n", get_next_line(fd));
 //	close(fd);
 }

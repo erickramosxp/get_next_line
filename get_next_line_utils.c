@@ -90,19 +90,21 @@ void	*ft_memmove(void *dest, const void *src, size_t n)
 
 char	*ft_strjoin(char const *s1, char const *s2)
 {
-	int		len;
-	char	*news;
+	char	*s;
+	char	*pos;
 
 	if (!s1 || !s2)
 		return (0);
-	len = ft_strlen(s1) + ft_strlen(s2);
-	news = (char *)malloc((len + 1) * sizeof(char));
-	if (news == NULL)
+	s = (char *)malloc(sizeof (char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
+	if (s == NULL)
 		return (NULL);
-	ft_memmove(news, (char *)s1, len + 1);
-	ft_strlcat(news, (char *)s2, len + 1);
-	news[len] = '\0';
-	return (news);
+	pos = s;
+	while (*s1)
+		*s++ = *s1++;
+	while (*s2)
+		*s++ = *s2++;
+	*s = '\0';
+	return (pos);
 }
 
 char	*ft_strcpy(char *dest, const char *src)
@@ -121,11 +123,19 @@ char	*ft_strcpy(char *dest, const char *src)
 
 char	*ft_strdup(const char *s)
 {
-	char	*copy;
+	char	*s1;
+	char	*s2;
+	char	*pos;
 
-	copy = (char *)malloc((ft_strlen(s) + 1) * sizeof(char));
-	if (!copy)
+	s1 = (char *)s;
+	s2 = (char *)malloc(sizeof(char) * (ft_strlen(s) + 1));
+	if (!s2)
 		return (NULL);
-	ft_strcpy(copy, s);
-	return (copy);
+	pos = s2;
+	while (*s1)
+	{
+		*s2++ = *s1++;
+	}
+	*s2 = 0;
+	return (pos);
 }

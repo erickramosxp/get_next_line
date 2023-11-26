@@ -21,6 +21,7 @@
 
 # endif
 
+void check_leaks();
 char	*get_next_line(int fd);
 size_t  ft_strlen(const char *s);
 void    *ft_memcpy(void *dest, const void *src, size_t n);
