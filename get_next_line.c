@@ -6,7 +6,7 @@
 /*   By: erramos <erramos@student.42.rio>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 16:32:11 by erramos           #+#    #+#             */
-/*   Updated: 2023/11/26 15:54:30 by erramos          ###   ########.fr       */
+/*   Updated: 2023/11/26 16:44:16 by erramos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ char	*read_line(int fd, char *rest, char *buffer)
 			return (0);
 		if (rd == 0)
 		{
-			rest = NULL;
 			break;
 		}
 		buffer[rd] = '\0';

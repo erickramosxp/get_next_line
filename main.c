@@ -13,7 +13,7 @@ int     main(void)
 //      get_next_line(fd);
 //      get_next_line(fd);
 
-        char    *a = get_next_line(-1);
+        char    *a = get_next_line(fd);
         printf("Primeira parte:\n%s", a);
         free(a);
         printf("\nsegunda parte:\n");
