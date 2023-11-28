@@ -6,7 +6,7 @@
 /*   By: erramos <erramos@student.42.rio>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 19:12:59 by erramos           #+#    #+#             */
-/*   Updated: 2023/11/17 19:46:16 by erramos          ###   ########.fr       */
+/*   Updated: 2023/11/27 16:51:08 by erramos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,25 +88,6 @@ void	*ft_memmove(void *dest, const void *src, size_t n)
 	return (dest);
 }
 
-char	*ft_strjoin(char const *s1, char const *s2)
-{
-	char	*s;
-	char	*pos;
-
-	if (!s1 || !s2)
-		return (0);
-	s = (char *)malloc(sizeof (char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
-	if (s == NULL)
-		return (NULL);
-	pos = s;
-	while (*s1)
-		*s++ = *s1++;
-	while (*s2)
-		*s++ = *s2++;
-	*s = '\0';
-	return (pos);
-}
-
 char	*ft_strcpy(char *dest, const char *src)
 {
 	int	i;
@@ -138,4 +119,31 @@ char	*ft_strdup(const char *s)
 	}
 	*s2 = 0;
 	return (pos);
+}
+
+char	*ft_strjoin(char *s1, char *s2)
+{
+	char	*s;
+	int	i;
+	int	j;
+
+	if (!s1 || !s2)
+		return (0);
+	s = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
+	if (!s)
+		return (NULL);
+	i = 0;
+	j = 0;
+	while (s1[i] != '\0')
+	{
+		s[i] = s1[i];
+		i++;
+	}
+	while (s2[j] != '\0')
+	{
+		s[i + j] = s2[j];
+		j++;
+	}
+	s[i + j] = '\0';
+	return (s);
 }

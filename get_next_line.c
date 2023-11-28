@@ -6,7 +6,7 @@
 /*   By: erramos <erramos@student.42.rio>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 16:32:11 by erramos           #+#    #+#             */
-/*   Updated: 2023/11/26 16:44:16 by erramos          ###   ########.fr       */
+/*   Updated: 2023/11/27 16:54:36 by erramos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <fcntl.h>
 #include <stdio.h>
 
-int	check_breakline(char *rest)
+static int	check_breakline(char *rest)
 {
 	int	i;
 
@@ -27,7 +27,7 @@ int	check_breakline(char *rest)
 	}
 	return (0);
 }
-char	*read_line(int fd, char *rest, char *buffer)
+static char	*read_line(int fd, char *rest, char *buffer)
 {
 	int	rd;
 	char	*temp;
@@ -39,24 +39,23 @@ char	*read_line(int fd, char *rest, char *buffer)
 		if (rd < 0)
 			return (0);
 		if (rd == 0)
-		{
 			break;
-		}
 		buffer[rd] = '\0';
 		if (!rest)
 			rest = ft_strdup("");
 		temp = ft_strdup(rest);
 		free(rest);
 		rest = ft_strjoin(temp, buffer);
-		free(temp);
-		temp = NULL;
+//		free(temp);
+//		free(buffer);
+//		temp = NULL;
 		if (check_breakline(rest))
 			break;
 	}
 	return (rest);
 }
 
-char	*get_line(char *line, char *rest)
+static char	*get_line(char *line, char *rest)
 {
 	int	i;
 	int	j;
@@ -65,10 +64,10 @@ char	*get_line(char *line, char *rest)
 	j = 0;
 	while (rest[i] != '\n' && rest[i] != '\0')
 		i++;
-	line = (char *)malloc((i + 1) * sizeof(char));
+	line = (char *)malloc((i + 2) * sizeof(char));
 	if (!line)
 		return (0);
-	while (j < i)
+	while (j <= i)
 	{
 		line[j] = rest[j];
 		j++;
@@ -77,15 +76,19 @@ char	*get_line(char *line, char *rest)
 	return (line);
 }
 
-char	*remove_breakline(char *rest)
+static char	*remove_breakline(char *rest)
 {
 	char	*temp;
 	int	i;
 	int	j;
 
 	i = 0;
+	if (!rest)
+		return (0);
 	while(rest[i] != '\n' && rest[i] != '\0')
 		i++;
+	if (rest[i] == '\0')
+		return (0);
 	j = i;
 	while (rest[j] != '\0')
 		j++;
@@ -128,10 +131,16 @@ char    *get_next_line(int fd)
 	free(buffer);
 	if (!rest)
 	{
+		free(rest);
 		return (NULL);
 	}
 	line = get_line(line, rest);
 	rest = remove_breakline(rest);
+/*	if (rest[0] == '\0')
+        {
+                free(rest);
+                return (NULL);
+        }*/
 	return (line);
 }
 /*

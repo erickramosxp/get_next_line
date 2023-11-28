@@ -1,42 +1,35 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dbessa <dbessa@student.42.rio>             +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/17 09:25:47 by dbessa            #+#    #+#             */
+/*   Updated: 2023/11/17 09:28:42 by dbessa           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-#include "get_next_line.h"
-#include <fcntl.h>
 #include <stdio.h>
+#include <fcntl.h>
+#include "get_next_line.h"
+#include <string.h>
 
-
-int     main(void)
+int	main(void)
 {
-        int     fd;
+	int		fd;
+	char	*imprime;
+	int		i;
 
-        fd = open("text.txt", O_RDONLY);
-//      get_next_line(fd);
-//      get_next_line(fd);
-//      get_next_line(fd);
-
-        char    *a = get_next_line(fd);
-        printf("Primeira parte:\n%s", a);
-        free(a);
-        printf("\nsegunda parte:\n");
-        char    *b = get_next_line(fd);
-        printf("%s", b);
-        free(b);
-        printf("\nterceira parte:\n");
-        char    *c = get_next_line(fd);
-        printf("%s", c);
-        free(c);
-        char    *d = get_next_line(fd);
-        printf("\n%s", d);
-        free(d);
-        char    *e = get_next_line(fd);
-        printf("\n%s", e);
-        free(e);
-        char    *f = get_next_line(fd);
-        printf("\n%s", f);
-        free(f);
-        char    *h = get_next_line(fd);
-        printf("\n%s", h);
-        free(h);
-        printf("\n%s", get_next_line(fd));
-        printf("\n%s\n\n", get_next_line(fd));
-//      close(fd);
+	i = 0;
+	fd = open("lorem.txt", O_RDWR);
+	while (i < 6)
+	{
+		imprime = get_next_line(fd);
+		printf("%s", imprime);
+                free(imprime);
+		i++;
+	}
+	close (fd);
+	return (0);
 }
