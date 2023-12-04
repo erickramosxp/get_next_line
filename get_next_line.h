@@ -6,7 +6,7 @@
 /*   By: erramos <erramos@student.42.rio>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 16:27:51 by erramos           #+#    #+#             */
-/*   Updated: 2023/11/23 15:06:18 by erramos          ###   ########.fr       */
+/*   Updated: 2023/11/28 19:10:13 by erramos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,11 @@
 
 # endif
 
-void check_leaks();
 char	*get_next_line(int fd);
-size_t  ft_strlen(const char *s);
-void    *ft_memcpy(void *dest, const void *src, size_t n);
-size_t  ft_strlcat(char *dest, char *src, size_t n);
-void    *ft_memcpy(void *dest, const void *src, size_t n);
-void    *ft_memmove(void *dest, const void *src, size_t n);
-char    *ft_strjoin(char *s1, char *s2);
-char     *ft_strcpy(char *dest, const char *src);
-char    *ft_strdup(const char *s);
+
+size_t	ft_strlen(const char *s);
+char	*ft_strjoin(char *s1, char *s2);
+char	*ft_strdup(const char *s);
+void	copy(char *dest, char *src, int i, int j);
 
 #endif
